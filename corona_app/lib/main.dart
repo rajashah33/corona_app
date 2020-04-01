@@ -1,6 +1,7 @@
 import 'package:corona_app/config/AppConfig.dart';
 import 'package:corona_app/locator.dart';
 import 'package:corona_app/views/home_page.dart';
+import 'package:corona_app/views/navigation_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'XYZ APP'),
+      home: NavigationView(),
     );
   }
 }
