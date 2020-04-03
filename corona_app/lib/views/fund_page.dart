@@ -208,7 +208,6 @@ class ReliefCard extends StatelessWidget {
                         ),
                         onTap: () async {
                           if (isNumeric(url)) {
-                            print("Show image");
                             buildShowDialog(context, url);
                           } else {
                             if (await canLaunch(url)) {

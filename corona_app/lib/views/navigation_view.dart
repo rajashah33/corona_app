@@ -3,10 +3,11 @@ import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/fund_page.dart';
 import 'package:corona_app/views/home_page.dart';
-import 'package:corona_app/views/news_page.dart';
+import 'package:corona_app/views/newsList.dart';
 import 'package:corona_app/views/reminder_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 class NavigationView extends StatefulWidget {
   NavigationView({Key key, this.title}) : super(key: key);
@@ -22,7 +23,8 @@ class _MyHomePageState extends State<NavigationView> {
   int _currentIndex = 0;
   List _children = [
     MyHomePage(),
-    NewsPage(),
+    // NewsPage(),
+    NewsList(),
     ReminderPage(),
     FundPage(),
   ];

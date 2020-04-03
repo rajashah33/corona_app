@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomReminder extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class CustomReminder extends StatefulWidget {
 class _CustomReminderState extends State<CustomReminder> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   TimeOfDay _pickedTime = TimeOfDay.now();
+
   List timeList = [
     TimeOfDay(hour: 10, minute: 00),
     TimeOfDay(hour: 15, minute: 00),
@@ -25,6 +27,14 @@ class _CustomReminderState extends State<CustomReminder> {
     var initSettings = InitializationSettings(androidSetting, iosSetting);
     flutterLocalNotificationsPlugin.initialize(initSettings,
         onSelectNotification: onSelectNotification);
+    setTimeData();
+  }
+
+  void setTimeData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('label', label);
+    prefs.setStringList('timeList', timeList);
   }
 
   Future onSelectNotification(String payload) {
