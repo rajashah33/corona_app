@@ -1,11 +1,10 @@
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
-import 'package:corona_app/views/reminder_page.dart';
 import 'package:corona_app/views/tracker_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -25,33 +24,48 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SafeArea(
           child: ListView(
             children: <Widget>[
-              Stack(children: <Widget>[
-                CarouselSlider(
-                  items: [
-                    'https://i.picsum.photos/id/0/5616/3744.jpg',
-                    'https://i.picsum.photos/id/0/5616/3744.jpg',
-                    'https://i.picsum.photos/id/0/5616/3744.jpg',
-                    'https://i.picsum.photos/id/0/5616/3744.jpg',
-                  ].map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            image: DecorationImage(
-                                fit: BoxFit.cover, image: NetworkImage(i)),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-                
-              ]),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Stack(children: <Widget>[
+                  CarouselSlider(
+                    autoPlay: true,
+                    items: [
+                      'https://appcovid19.page.link/infopic1',
+                      'https://appcovid19.page.link/infopic2',
+                      'https://appcovid19.page.link/infopic3',
+                      'https://appcovid19.page.link/infopic4',
+                    ].map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            // padding: EdgeInsets.all(8.0),
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: i,
+                              fit: BoxFit.fill,
+                              // width: MediaQuery.of(context).size.width * .6,
+                              alignment: Alignment.center,
+                            ),
+                          );
+                          // return Container(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.amber,
+                          //     borderRadius:
+                          //         BorderRadius.all(Radius.circular(8.0)),
+                          //     image: DecorationImage(
+                          //         fit: BoxFit.cover, image: NetworkImage(i)),
+                          //   ),
+                          // );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ]),
+              ),
               // Container(
               //   height: 150,
               //   width: MediaQuery.of(context).size.width,
@@ -146,48 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  GestureDetector(
-                    child: Card(
-                      // margin: EdgeInsets.all(10.0),
-                      elevation: 10.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Row(
-                          children: <Widget>[Text('Set Reminders')],
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReminderPage()));
-                    },
-                  ),
-                  GestureDetector(
-                    child: Card(
-                      margin: EdgeInsets.all(10.0),
-                      elevation: 10.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Row(
-                          children: <Widget>[Text('Someone Outside ')],
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TrackerPage(
-                                  url: 'https://www.covid19india.org/')));
-                    },
-                  ),
-                ],
-              ),
+
               GestureDetector(
                 child: Card(
                   margin: EdgeInsets.all(10.0),
