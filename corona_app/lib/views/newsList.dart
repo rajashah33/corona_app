@@ -1,4 +1,3 @@
-
 import 'package:corona_app/config/constants.dart';
 import 'package:corona_app/models/newsArticle.dart';
 import 'package:corona_app/services/webservice.dart';
@@ -6,30 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class NewsListState extends State<NewsList> {
-
-  List<NewsArticle> _newsArticles = List<NewsArticle>(); 
+  List<NewsArticle> _newsArticles = List<NewsArticle>();
 
   @override
   void initState() {
     super.initState();
-    _populateNewsArticles(); 
+    _populateNewsArticles();
   }
 
   void _populateNewsArticles() {
-   
-    Webservice().load(NewsArticle.all).then((newsArticles) => {
-      setState(() => {
-        _newsArticles = newsArticles
-      })
-    });
-
+    try {
+      Webservice().load(NewsArticle.all).then((newsArticles) => {
+            setState(() => {_newsArticles = newsArticles})
+          });
+    } catch (e) {
+      print('---Exception in newList.dart while callig Webservice');
+    }
   }
 
   ListTile _buildItemsForListView(BuildContext context, int index) {
+    try {
       return ListTile(
-        title: _newsArticles[index].urlToImage == null ? Image.asset(Constants.NEWS_PLACEHOLDER_IMAGE_ASSET_URL) : Image.network(_newsArticles[index].urlToImage), 
-        subtitle: Text(_newsArticles[index].title, style: TextStyle(fontSize: 18)),
+        title: _newsArticles[index].urlToImage == null
+            ? Image.asset(Constants.NEWS_PLACEHOLDER_IMAGE_ASSET_URL)
+            : Image.network(_newsArticles[index].urlToImage),
+        subtitle:
+            Text(_newsArticles[index].title, style: TextStyle(fontSize: 18)),
       );
+    } catch (e) {print('---Exception in newList.dart loading Image.Network');}
   }
 
   @override
@@ -41,13 +44,11 @@ class NewsListState extends State<NewsList> {
         body: ListView.builder(
           itemCount: _newsArticles.length,
           itemBuilder: _buildItemsForListView,
-        )
-      );
+        ));
   }
 }
 
 class NewsList extends StatefulWidget {
-
   @override
-  createState() => NewsListState(); 
+  createState() => NewsListState();
 }

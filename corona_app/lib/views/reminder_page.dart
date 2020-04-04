@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:corona_app/scopped_models/reminder_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/custom_reminder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReminderPage extends StatefulWidget {
   @override
@@ -35,7 +39,7 @@ class _ReminderPageState extends State<ReminderPage> {
                     onChanged: (value) {
                       setState(() {
                         isSwitched = value;
-                        print(isSwitched);
+                        _modifyUpcomingNotif(isSwitched);
                       });
                     },
                     activeTrackColor: Colors.lightGreenAccent,
@@ -54,12 +58,14 @@ class _ReminderPageState extends State<ReminderPage> {
                         Expanded(
                           child: InkWell(
                             child: _buildRowCard(context, "assets/handwash.png",
-                                Colors.blue, '0', 'Wash Hands Reminder     '),
+                                Colors.blue, 'Wash your Hands Reminder     '),
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CustomReminder()));
+                                      builder: (context) => CustomReminder(
+                                            reminderRole: 0,
+                                          )));
                             },
                           ),
                         ),
@@ -72,10 +78,59 @@ class _ReminderPageState extends State<ReminderPage> {
                                 context,
                                 "assets/citricfruit.png",
                                 Colors.orange,
-                                '3',
                                 'Eat Citric Food Reminder'),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomReminder(
+                                            reminderRole: 1,
+                                          )));
+                            },
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              AbsorbPointer(
+                absorbing: !isSwitched,
+                child: Opacity(
+                  opacity: isSwitched ? 1.0 : 0.3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: InkWell(
+                            child: _buildRowCard(
+                                context,
+                                "assets/drinkwater.png",
+                                Colors.pink,
+                                'Drink Water Reminder'),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomReminder(
+                                            reminderRole: 2,
+                                          )));
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: Opacity(
+                            opacity: 0,
+                            child: _buildRowCard(
+                                context,
+                                "assets/drinkwater.png",
+                                Colors.blue,
+                                'Wash your Hands Reminder'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6.0,
                         ),
                       ],
                     ),
@@ -89,10 +144,9 @@ class _ReminderPageState extends State<ReminderPage> {
     );
   }
 
-  Widget _buildRowCard(
-      context, String imagePath, Color color, String text, String title) {
+  Widget _buildRowCard(context, String imagePath, Color color, String title) {
     return Card(
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,13 +168,6 @@ class _ReminderPageState extends State<ReminderPage> {
                   backgroundColor: color,
                   foregroundColor: Colors.white70,
                 ),
-                Text(
-                  text,
-                  style: Theme.of(context)
-                      .textTheme
-                      .display1
-                      .copyWith(fontWeight: FontWeight.bold),
-                )
               ],
             ),
             Padding(
@@ -140,6 +187,19 @@ class _ReminderPageState extends State<ReminderPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     );
   }
+
+  Future<void> _modifyUpcomingNotif(bool isSwitched) async {
+    if (isSwitched == false) {
+      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      await flutterLocalNotificationsPlugin.cancelAll();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      for (var role = 0; role < 3; role++) {
+        var stringList = prefs.getStringList('timeList' + role.toString());
+        if (stringList != null) {
+          prefs.setStringList('timeList' + role.toString(), null);
+        }
+      }
+    }
+  }
 }
-
-

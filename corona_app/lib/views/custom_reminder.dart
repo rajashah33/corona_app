@@ -1,51 +1,75 @@
+import 'dart:math';
+
+import 'package:corona_app/enums/app_enums.dart';
+import 'package:corona_app/locator.dart';
+import 'package:corona_app/models/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomReminder extends StatefulWidget {
+  int reminderRole;
+  //  ReminderRole mapping:
+  //   0 means washHands
+  //   1 means EatCitricFood
+  //   2 means DrinkWater
+  //
+  CustomReminder({Key key, @required this.reminderRole}) : super(key: key);
   @override
   _CustomReminderState createState() => _CustomReminderState();
 }
 
 class _CustomReminderState extends State<CustomReminder> {
+  String role;
+  AppData _appData = locator<AppData>();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   TimeOfDay _pickedTime = TimeOfDay.now();
 
-  List timeList = [
-    TimeOfDay(hour: 10, minute: 00),
-    TimeOfDay(hour: 15, minute: 00),
-    TimeOfDay(hour: 19, minute: 00)
-  ];
-  String label = 'Time to wash your hands';
+  List<String> timeList = [];
+  String label = '';
 
   @override
   void initState() {
     super.initState();
+    role = widget.reminderRole.toString();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     var androidSetting = AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosSetting = IOSInitializationSettings();
     var initSettings = InitializationSettings(androidSetting, iosSetting);
     flutterLocalNotificationsPlugin.initialize(initSettings,
-        onSelectNotification: onSelectNotification);
-    setTimeData();
+        onSelectNotification: null);
+    getSharedPref();
   }
 
-  void setTimeData() async {
+  void setSharedPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.setString('label', label);
-    prefs.setStringList('timeList', timeList);
+    if (prefs.getStringList('timeList' + role) == null) {
+      setState(() {
+        label = _appData.labels[widget.reminderRole];
+      });
+      prefs.setString('label' + role, label);
+      prefs.setStringList('timeList' + role, _appData.initialTimeList);
+    } else {
+      prefs.setString('label' + role, label);
+      prefs.setStringList('timeList' + role, timeList);
+    }
+    _setSheduledNotif();
   }
 
-  Future onSelectNotification(String payload) {
-    debugPrint("payload : $payload");
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: Text('Notifi clicked'),
-          );
-        });
+  getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('timeList' + role) == null) {
+      prefs.setString('label' + role, label);
+      prefs.setStringList('timeList' + role, _appData.initialTimeList);
+      setState(() {
+        timeList = _appData.initialTimeList;
+      });
+    } else {
+      setState(() {
+        label = prefs.getString('label' + role);
+        timeList = prefs.getStringList('timeList' + role);
+      });
+    }
   }
 
   @override
@@ -88,19 +112,36 @@ class _CustomReminderState extends State<CustomReminder> {
               child: Text('+ Add more time'),
               onPressed: () {
                 setState(() {
-                  timeList.add(TimeOfDay.now());
-                  _scheduleNotification();
+                  timeList.add(TimeOfDay.now().toString());
+                  // _scheduleNotification();
                 });
                 print(timeList);
+                setSharedPref();
               },
             ),
             Expanded(
               child: ListView.builder(
                   itemCount: timeList.length,
                   itemBuilder: (context, index) => this._buildRow(index)),
-            )
-
-            // _buildCustomExpansion(context)
+            ),
+            InkWell(
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.deepOrange,
+                child: Center(
+                    child: Text(
+                  'Done',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                )),
+              ),
+              onTap: () {
+                setState(() {
+                  setSharedPref();
+                  Navigator.pop(context);
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -114,16 +155,15 @@ class _CustomReminderState extends State<CustomReminder> {
           title: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: RaisedButton(
-              child: Text(timeList[index].hour.toString() +
-                  ':' +
-                  timeList[index].minute.toString()),
+              child: Text(to12HourFormat(timeList[index].toString())),
               onPressed: () async {
                 var _time = await showTimePicker(
                     context: context, initialTime: TimeOfDay.now());
-                timeList[index] = _time;
-                print(timeList);
                 setState(() {
-                  _pickedTime = _time;
+                  if (_time != null) {
+                    timeList[index] = _time.toString();
+                  }
+                  setSharedPref();
                 });
               },
             ),
@@ -132,47 +172,41 @@ class _CustomReminderState extends State<CustomReminder> {
             icon: Icon(Icons.delete),
             onPressed: () {
               timeList.removeAt(index);
-              setState(() {});
+              //TODO: implement cancel notification for the removed
+              setState(() {
+                setSharedPref();
+              });
             },
           )),
     );
   }
 
-  void showNotif() async {
-    var android = AndroidNotificationDetails(
-        'channel id', 'channel Name', 'Channel Description');
-    var ios = IOSNotificationDetails();
-    var platform = NotificationDetails(android, ios);
-    var scheduledNotificationDateTime =
-        new DateTime.now().add(Duration(seconds: 10));
-    await flutterLocalNotificationsPlugin.schedule(
-        0, 'Title ', 'Body', scheduledNotificationDateTime, platform);
+  Future<void> _cancelNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  Future<void> _cancelNotification() async {
-    await flutterLocalNotificationsPlugin.cancel(0);
-  }
-
-  /// Schedules a notification that specifies a different icon, sound and vibration pattern
-  Future<void> _scheduleNotification() async {
+  _scheduleDaily(id, _label, h, m) async {
     var scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: 20));
+        DateTime.now().add(Duration(seconds: 1));
+    print(scheduledNotificationDateTime.toString());
+    //  var scheduledNotificationDateTime =
+    // DateTime.now().add(Duration(seconds: 20));
     // var vibrationPattern = Int64List(4);
     // vibrationPattern[0] = 0;
     // vibrationPattern[1] = 1000;
     // vibrationPattern[2] = 5000;
     // vibrationPattern[3] = 2000;
-
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your other channel id',
-        'your other channel name',
-        'your other channel description',
+        id.toString(), _label, 'your other channel description',
+
         // icon: 'secondary_icon',
         // sound: 'slow_spring_board',
         // largeIcon: 'sample_large_icon',
         largeIconBitmapSource: BitmapSource.Drawable,
         // vibrationPattern: vibrationPattern,
         enableLights: true,
+        priority: Priority.Max,
+        importance: Importance.Max,
         color: const Color.fromARGB(255, 255, 0, 0),
         ledColor: const Color.fromARGB(255, 255, 0, 0),
         ledOnMs: 1000,
@@ -181,11 +215,35 @@ class _CustomReminderState extends State<CustomReminder> {
         IOSNotificationDetails(sound: 'slow_spring_board.aiff');
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'scheduled title',
-        'scheduled body',
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
+    // await flutterLocalNotificationsPlugin.schedule(0, _label, 'scheduled body',
+    //     scheduledNotificationDateTime, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(id, _label,
+        'this is the body', Time(h, m, 0), platformChannelSpecifics);
+    print(Time(h, m, 0).hour);
+  }
+
+  String to12HourFormat(String time) {
+    var t = time.substring(10, 15);
+    var h = int.parse(time.substring(10, 12));
+    var m = t.substring(3, 5);
+
+    if (h < 12 || h == 0) {
+      if (h == 0) h = 12;
+      return h.toString() + ':' + m + ' AM';
+    } else {
+      h = h - 12;
+      return h.toString() + ':' + m + ' PM';
+    }
+  }
+
+  void _setSheduledNotif() {
+    for (var i in timeList) {
+      var h = int.parse(i.substring(10, 12));
+      var m = int.parse(i.substring(13, 15));
+      // print(h.toString() + ':' + m.toString() + '-------------------');
+      var id = pow(h, 2) + pow(m, 3) + widget.reminderRole;
+      _scheduleDaily(id, label, h, m);
+      print(id.toString());
+    }
   }
 }

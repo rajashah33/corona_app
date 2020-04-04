@@ -1,4 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:corona_app/locator.dart';
+import 'package:corona_app/models/app_data.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/fund_page.dart';
@@ -7,7 +9,6 @@ import 'package:corona_app/views/newsList.dart';
 import 'package:corona_app/views/reminder_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 class NavigationView extends StatefulWidget {
   NavigationView({Key key, this.title}) : super(key: key);
@@ -28,13 +29,13 @@ class _MyHomePageState extends State<NavigationView> {
     ReminderPage(),
     FundPage(),
   ];
+  AppData _appData = locator<AppData>();
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeScopedModel>(
       builder: (context, child, model) => Scaffold(
         body: SafeArea(child: _children[_currentIndex]),
         bottomNavigationBar: BottomNavyBar(
-          
           selectedIndex: _currentIndex,
           onItemSelected: _onTapped,
           items: [
