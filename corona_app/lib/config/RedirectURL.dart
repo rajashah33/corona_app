@@ -12,5 +12,8 @@ final String who = "https://www.who.int/emergencies/diseases/novel-coronavirus-2
 final String worldStats = 'https://www.worldometers.info/coronavirus/';
 final String indiaStats = 'https://www.covid19india.org/';
 
+final String whotwitter = 'https://twitter.com/who?lang=en';
+final String mohfwtwitter = 'https://twitter.com/MoHFW_INDIA';
+
 
 }

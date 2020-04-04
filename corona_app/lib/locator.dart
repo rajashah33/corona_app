@@ -7,7 +7,6 @@ import 'package:corona_app/config/ReliefURL.dart';
 import 'package:corona_app/models/app_data.dart';
 import 'package:corona_app/scopped_models/fund_scoped_model.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
-import 'package:corona_app/scopped_models/redirect_scoped_model.dart';
 import 'package:corona_app/scopped_models/reminder_scoped_model.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,5 +22,4 @@ setupLocator() {
   locator.registerLazySingleton(() => HomeScopedModel());
   locator.registerLazySingleton(() => ReminderScopedModel());
   locator.registerLazySingleton(() => FundScopedModel());
-  locator.registerLazySingleton(() => RedirectScopedModel());
 }

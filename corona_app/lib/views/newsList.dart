@@ -1,9 +1,12 @@
+import 'package:corona_app/config/AppConfig.dart';
 import 'package:corona_app/config/constants.dart';
+import 'package:corona_app/locator.dart';
 import 'package:corona_app/models/newsArticle.dart';
 import 'package:corona_app/services/webservice.dart';
 import 'package:corona_app/views/tracker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NewsListState extends State<NewsList> {
   List<NewsArticle> _newsArticles = List<NewsArticle>();
@@ -31,7 +34,8 @@ class NewsListState extends State<NewsList> {
             ? Image.asset(Constants.NEWS_PLACEHOLDER_IMAGE_ASSET_URL)
             : Image.network(_newsArticles[index].urlToImage),
         subtitle:
-            Text(_newsArticles[index].title, style: TextStyle(fontSize: 18)),
+            Text(_newsArticles[index].title, style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                          textScaleFactor: 1.3,),
         onTap: () {
           Navigator.push(
               context,
@@ -47,6 +51,7 @@ class NewsListState extends State<NewsList> {
 
   @override
   Widget build(BuildContext context) {
+    AppConfig conf = locator.get<AppConfig>();
     return Scaffold(
         appBar: AppBar(
           title: Text('News'),

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:corona_app/config/AppConfig.dart';
+import 'package:corona_app/locator.dart';
 import 'package:corona_app/scopped_models/reminder_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/custom_reminder.dart';
@@ -13,6 +15,7 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
+  AppConfig conf = locator.get<AppConfig>();
   bool isSwitched = true;
   @override
   Widget build(BuildContext context) {
@@ -28,116 +31,121 @@ class _ReminderPageState extends State<ReminderPage> {
           // ),
         ),
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Row(children: [
-                  Text('Enable Reminder'),
-                  Switch(
-                    value: isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        isSwitched = value;
-                        _modifyUpcomingNotif(isSwitched);
-                      });
-                    },
-                    activeTrackColor: Colors.lightGreenAccent,
-                    activeColor: Colors.green,
-                  ),
-                ]),
-              ),
-              AbsorbPointer(
-                absorbing: !isSwitched,
-                child: Opacity(
-                  opacity: isSwitched ? 1.0 : 0.3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: InkWell(
-                            child: _buildRowCard(context, "assets/handwash.png",
-                                Colors.blue, 'Wash your Hands Reminder     '),
-                            onTap: () {
-                              Navigator.push(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Row(children: [
+                    Text('Enable Reminder'),
+                    Switch(
+                      value: isSwitched,
+                      onChanged: (value) {
+                        setState(() {
+                          isSwitched = value;
+                          _modifyUpcomingNotif(isSwitched);
+                        });
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    ),
+                  ]),
+                ),
+                AbsorbPointer(
+                  absorbing: !isSwitched,
+                  child: Opacity(
+                    opacity: isSwitched ? 1.0 : 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: InkWell(
+                              child: _buildRowCard(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CustomReminder(
-                                            reminderRole: 0,
-                                          )));
-                            },
+                                  "assets/handwash.png",
+                                  Colors.blue,
+                                  'Wash your Hands Reminder     '),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CustomReminder(
+                                              reminderRole: 0,
+                                            )));
+                              },
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 6.0,
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            child: _buildRowCard(
-                                context,
-                                "assets/citricfruit.png",
-                                Colors.orange,
-                                'Eat Citric Food Reminder'),
-                            onTap: () {
-                              Navigator.push(
+                          SizedBox(
+                            width: 6.0,
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              child: _buildRowCard(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CustomReminder(
-                                            reminderRole: 1,
-                                          )));
-                            },
+                                  "assets/citricfruit.png",
+                                  Colors.orange,
+                                  'Eat Citric Food Reminder'),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CustomReminder(
+                                              reminderRole: 1,
+                                            )));
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              AbsorbPointer(
-                absorbing: !isSwitched,
-                child: Opacity(
-                  opacity: isSwitched ? 1.0 : 0.3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: InkWell(
-                            child: _buildRowCard(
-                                context,
-                                "assets/drinkwater.png",
-                                Colors.pink,
-                                'Drink Water Reminder'),
-                            onTap: () {
-                              Navigator.push(
+                AbsorbPointer(
+                  absorbing: !isSwitched,
+                  child: Opacity(
+                    opacity: isSwitched ? 1.0 : 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: InkWell(
+                              child: _buildRowCard(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CustomReminder(
-                                            reminderRole: 2,
-                                          )));
-                            },
+                                  "assets/drinkwater.png",
+                                  Colors.pink,
+                                  'Drink Water Reminder'),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CustomReminder(
+                                              reminderRole: 2,
+                                            )));
+                              },
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Opacity(
-                            opacity: 0,
-                            child: _buildRowCard(
-                                context,
-                                "assets/drinkwater.png",
-                                Colors.blue,
-                                'Wash your Hands Reminder'),
+                          Expanded(
+                            child: Opacity(
+                              opacity: 0,
+                              child: _buildRowCard(
+                                  context,
+                                  "assets/drinkwater.png",
+                                  Colors.blue,
+                                  'Wash your Hands Reminder'),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 6.0,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 6.0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

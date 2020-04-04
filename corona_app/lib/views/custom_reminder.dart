@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:corona_app/config/AppConfig.dart';
 import 'package:corona_app/enums/app_enums.dart';
 import 'package:corona_app/locator.dart';
 import 'package:corona_app/models/app_data.dart';
@@ -75,78 +76,84 @@ class _CustomReminderState extends State<CustomReminder> {
 
   @override
   Widget build(BuildContext context) {
+    AppConfig conf = locator.get<AppConfig>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
             _appData.labels[widget.reminderRole].substring(8) + ' Reminder'),
       ),
       // backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(8.0),
-              child: Text('Repeat timing in a day:',
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
-                        // color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      )),
+      body: Container(
+        decoration: new BoxDecoration(
+              color: conf.backgroundColor,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('Label:  ', style: TextStyle(fontSize: 18)),
-                  Flexible(
-                      child: TextFormField(
-                    initialValue: label == ''
-                        ? _appData.labels[widget.reminderRole]
-                        : label,
-                    onChanged: (text) {
-                      label = text;
-                    },
-                  )),
-                ],
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(8.0),
+                child: Text('Repeat timing in a day:',
+                    style: Theme.of(context).textTheme.subtitle.copyWith(
+                          // color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        )),
               ),
-            ),
-            RaisedButton(
-              child: Text('+ Add more time'),
-              onPressed: () {
-                setState(() {
-                  timeList.add(TimeOfDay.now().toString());
-                  // _scheduleNotification();
-                });
-                print(timeList);
-                setSharedPref();
-              },
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: timeList.length,
-                  itemBuilder: (context, index) => this._buildRow(index)),
-            ),
-            InkWell(
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.deepOrange,
-                child: Center(
-                    child: Text(
-                  'Done',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
-                )),
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Label:  ', style: TextStyle(fontSize: 18)),
+                    Flexible(
+                        child: TextFormField(
+                      initialValue: label == ''
+                          ? _appData.labels[widget.reminderRole]
+                          : label,
+                      onChanged: (text) {
+                        label = text;
+                      },
+                    )),
+                  ],
+                ),
               ),
-              onTap: () {
-                setState(() {
+              RaisedButton(
+                child: Text('+ Add more time'),
+                onPressed: () {
+                  setState(() {
+                    timeList.add(TimeOfDay.now().toString());
+                    // _scheduleNotification();
+                  });
+                  print(timeList);
                   setSharedPref();
-                  Navigator.pop(context);
-                });
-              },
-            ),
-          ],
+                },
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: timeList.length,
+                    itemBuilder: (context, index) => this._buildRow(index)),
+              ),
+              InkWell(
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.deepOrange,
+                  child: Center(
+                      child: Text(
+                    'Done',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                  )),
+                ),
+                onTap: () {
+                  setState(() {
+                    setSharedPref();
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:corona_app/config/AppConfig.dart';
 import 'package:corona_app/config/ReliefText.dart';
 import 'package:corona_app/config/ReliefURL.dart';
 import 'package:corona_app/scopped_models/fund_scoped_model.dart';
@@ -21,6 +22,8 @@ class FundPage extends StatefulWidget {
 }
 
 class _FundPageState extends State<FundPage> {
+  
+  AppConfig conf = locator.get<AppConfig>();
   ReliefText reliefText = locator.get<ReliefText>();
   ReliefURL reliefURL = locator.get<ReliefURL>();
 
@@ -31,129 +34,47 @@ class _FundPageState extends State<FundPage> {
         appBar: AppBar(
           title: Text('Donations'),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  ReliefCard(reliefText.pmcares, reliefURL.pmcares),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.pmNAT, reliefURL.pmNAT),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmAP, reliefURL.cmAP),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmArP, reliefURL.cmArP),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmAS, reliefURL.cmAS),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmBIH, reliefURL.cmBIH),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmCHATT, reliefURL.cmCHATT),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmDEL, reliefURL.cmDEL),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmGOA, reliefURL.cmGOA),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmGUJ, reliefURL.cmGUJ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmHAR, reliefURL.cmHAR),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmHP, reliefURL.cmHP),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmJAR, reliefURL.cmJAR),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmKAR, reliefURL.cmKAR),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmMP, reliefURL.cmMP),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmMAH, reliefURL.cmMAH),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmMAN, reliefURL.cmMAN),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmMEG, reliefURL.cmMEG),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmMIZ, reliefURL.cmMIZ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmNAG, reliefURL.cmNAG),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmODI, reliefURL.cmODI),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmPUN, reliefURL.cmPUN),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmRAJ, reliefURL.cmRAJ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmTN, reliefURL.cmTN),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmTEL, reliefURL.cmTEL),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmTRI, reliefURL.cmTRI),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmUP, reliefURL.cmUP),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmUTT, reliefURL.cmUTT),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmWB, reliefURL.cmWB),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  ReliefCard(reliefText.cmJK, reliefURL.cmJK),
-                ]),
+        body: Container(
+          decoration: new BoxDecoration(
+              color: conf.backgroundColor,
+            ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    ReliefCard(reliefText.pmcares, reliefURL.pmcares),
+                    ReliefCard(reliefText.pmNAT, reliefURL.pmNAT),
+                    ReliefCard(reliefText.cmAP, reliefURL.cmAP),
+                    ReliefCard(reliefText.cmArP, reliefURL.cmArP),
+                    ReliefCard(reliefText.cmAS, reliefURL.cmAS),
+                    ReliefCard(reliefText.cmBIH, reliefURL.cmBIH),
+                    ReliefCard(reliefText.cmCHATT, reliefURL.cmCHATT),
+                    ReliefCard(reliefText.cmDEL, reliefURL.cmDEL),
+                    ReliefCard(reliefText.cmGOA, reliefURL.cmGOA),
+                    ReliefCard(reliefText.cmGUJ, reliefURL.cmGUJ),
+                    ReliefCard(reliefText.cmHAR, reliefURL.cmHAR),
+                    ReliefCard(reliefText.cmHP, reliefURL.cmHP),
+                    ReliefCard(reliefText.cmJAR, reliefURL.cmJAR),
+                    ReliefCard(reliefText.cmKAR, reliefURL.cmKAR),
+                    ReliefCard(reliefText.cmMP, reliefURL.cmMP),
+                    ReliefCard(reliefText.cmMAH, reliefURL.cmMAH),
+                    ReliefCard(reliefText.cmMAN, reliefURL.cmMAN),
+                    ReliefCard(reliefText.cmMEG, reliefURL.cmMEG),
+                    ReliefCard(reliefText.cmMIZ, reliefURL.cmMIZ),
+                    ReliefCard(reliefText.cmNAG, reliefURL.cmNAG),
+                    ReliefCard(reliefText.cmODI, reliefURL.cmODI),
+                    ReliefCard(reliefText.cmPUN, reliefURL.cmPUN),
+                    ReliefCard(reliefText.cmRAJ, reliefURL.cmRAJ),
+                    ReliefCard(reliefText.cmTN, reliefURL.cmTN),
+                    ReliefCard(reliefText.cmTEL, reliefURL.cmTEL),
+                    ReliefCard(reliefText.cmTRI, reliefURL.cmTRI),
+                    ReliefCard(reliefText.cmUP, reliefURL.cmUP),
+                    ReliefCard(reliefText.cmUTT, reliefURL.cmUTT),
+                    ReliefCard(reliefText.cmWB, reliefURL.cmWB),
+                    ReliefCard(reliefText.cmJK, reliefURL.cmJK),
+                  ]),
+            ),
           ),
         ),
       ),
