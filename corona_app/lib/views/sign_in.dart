@@ -23,33 +23,45 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<SignInScopedModel>(
-      builder: (context, child, model) => Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              child: Text('Sign In using Google'),
-              onPressed: () {
-                authService.googleSignIn().then((user) async {
-                  //Shared pref store
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString('userEmail', user.email.toString());
+            Text(
+              'Sign in for location Tracker',
+              style: TextStyle(fontSize: 20),
+            ),
+            Container(
+              child: CircleAvatar(
+                child: Icon(Icons.location_on),
+              ),
+            ),
+            Center(
+              child: RaisedButton(
+                child: Text('Sign In using Google'),
+                onPressed: () {
+                  authService.googleSignIn().then((user) async {
+                    //Shared pref store
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('userEmail', user.email.toString());
 
-                  Firestore.instance
-                      .collection('covid19Info')
-                      .document()
-                      .setData({
-                    'email': user.email.toString(),
-                    'location': '87415414'
+                    Firestore.instance
+                        .collection('covid19Info')
+                        .document()
+                        .setData({
+                      'email': user.email.toString(),
+                      'location': '87415414'
+                    });
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GetLocation(user)));
                   });
-
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GetLocation(user)));
-                });
-              },
+                },
+              ),
             )
           ],
         ),
@@ -57,6 +69,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 }
+
 class GetLocation extends StatefulWidget {
   var user;
 
@@ -77,34 +90,41 @@ class _GetLocationState extends State<GetLocation> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              child: Text('Location Tracker '),
-              onPressed: () async {
-                var status =
-                    await Geolocator().checkGeolocationPermissionStatus();
-                setState(() {
-                  geolocationStatus = status;
-                });
-                print(geolocationStatus.toString() + '----------');
-                if (geolocationStatus == GeolocationStatus.granted) {
-                  Position position = await Geolocator().getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high);
-                  print(position.toString());
-
-                  //store to firebase
-                  Firestore.instance.collection('users').document().setData({
-                    'email': widget.user.email.toString(),
-                    'location': position.toString(),
+            Center(
+              child: RaisedButton(
+                child: Text('Location Tracker '),
+                onPressed: () async {
+                  var status =
+                      await Geolocator().checkGeolocationPermissionStatus();
+                  setState(() {
+                    geolocationStatus = status;
                   });
-                } else if (geolocationStatus == GeolocationStatus.disabled) {
-                  _buildShowDialog(context, "Location Not Enabled",
-                      "Please go to Settings and Enable the locations");
-                } else {
-                  _buildShowDialog(context, "Location Permission Not Granted",
-                      "Please go to Settings > Apps > AppName > Permissions > Allow Location Permission");
-                }
-              },
+                  print(geolocationStatus.toString() + '----------');
+                  if (geolocationStatus == GeolocationStatus.granted) {
+                    Position position = await Geolocator().getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high);
+                    print(position.toString());
+
+                    //store to firebase
+                    Firestore.instance.collection('users').document().setData({
+                      'email': widget.user.email.toString(),
+                      'location': position.toString(),
+                    });
+                  } else if (geolocationStatus == GeolocationStatus.disabled) {
+                    _buildShowDialog(context, "Location Not Enabled",
+                        "Please go to Settings and Enable the locations");
+                  } else {
+                    _buildShowDialog(context, "Location Permission Not Granted",
+                        "Please go to Settings > Apps > AppName > Permissions > Allow Location Permission");
+                  }
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => LocationTracker()));
+                },
+              ),
             )
           ],
         ),
