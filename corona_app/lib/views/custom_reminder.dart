@@ -59,11 +59,12 @@ class _CustomReminderState extends State<CustomReminder> {
   getSharedPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('timeList' + role) == null) {
-      prefs.setString('label' + role, label);
-      prefs.setStringList('timeList' + role, _appData.initialTimeList);
       setState(() {
+        label = _appData.labels[widget.reminderRole];
         timeList = _appData.initialTimeList;
       });
+      prefs.setString('label' + role, label);
+      prefs.setStringList('timeList' + role, timeList);
     } else {
       setState(() {
         label = prefs.getString('label' + role);
@@ -76,7 +77,8 @@ class _CustomReminderState extends State<CustomReminder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Wash Hand Reminder'),
+        title: Text(
+            _appData.labels[widget.reminderRole].substring(8) + ' Reminder'),
       ),
       // backgroundColor: Colors.black,
       body: SafeArea(
@@ -100,7 +102,9 @@ class _CustomReminderState extends State<CustomReminder> {
                   Text('Label:  ', style: TextStyle(fontSize: 18)),
                   Flexible(
                       child: TextFormField(
-                    initialValue: label,
+                    initialValue: label == ''
+                        ? _appData.labels[widget.reminderRole]
+                        : label,
                     onChanged: (text) {
                       label = text;
                     },

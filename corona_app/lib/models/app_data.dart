@@ -20,7 +20,7 @@ class AppData {
     TimeOfDay(hour: 20, minute: 00).toString(),
   ];
   List labels = [
-    'Time to wash your Hands',
+    'Time to Wash your Hands',
     'Time to Eat some Citric Fruit',
     'Time to Drink some Water',
   ];
