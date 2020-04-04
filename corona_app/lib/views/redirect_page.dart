@@ -46,30 +46,45 @@ class _RedirectPageState extends State<RedirectPage> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    child: Card(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const ListTile(
-                            title: Text('India Covid-19 Statistics'),
-                          )
-                        ],
-                      ),
+                  Card(
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 10,
+                          child: Container(
+                            height: MediaQuery.of(context).size.width / 4,
+                            color: Colors.lightBlue,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                InkWell(
+                                  child: Text(
+                                    "India Covid-19 Statistics",
+                                    style: GoogleFonts.lato(
+                                        fontStyle: FontStyle.normal),
+                                    textScaleFactor: 1.1,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TrackerPage(
+                                                url:
+                                                    redirectURL.indiaStats)));
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TrackerPage(
-                                          url:
-                                              'https://www.covid19india.org')));
-                            },
                   ),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.mohfw, redirectURL.mohfw),
+                  InfoCard(redirectText.mohfw, redirectURL.mohfw),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -85,50 +100,65 @@ class _RedirectPageState extends State<RedirectPage> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    child: Card(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const ListTile(
-                            title: Text('World Covid-19 Statistics'),
-                          )
-                        ],
-                      ),
+                  Card(
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 10,
+                          child: Container(
+                            height: MediaQuery.of(context).size.width / 4,
+                            color: Colors.lightBlue,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                InkWell(
+                                  child: Text(
+                                    "World Covid-19 Statistics",
+                                    style: GoogleFonts.lato(
+                                        fontStyle: FontStyle.normal),
+                                    textScaleFactor: 1.1,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TrackerPage(
+                                                url:
+                                                    redirectURL.worldStats)));
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TrackerPage(
-                                          url:
-                                              'https://www.worldometers.info/coronavirus/')));
-                            },
                   ),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.general, redirectURL.general),
+                  InfoCard(redirectText.general, redirectURL.general),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.infection, redirectURL.infection),
+                  InfoCard(redirectText.infection, redirectURL.infection),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.institute, redirectURL.institute),
+                  InfoCard(redirectText.institute, redirectURL.institute),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.gather, redirectURL.gather),
+                  InfoCard(redirectText.gather, redirectURL.gather),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.animals, redirectURL.animals),
+                  InfoCard(redirectText.animals, redirectURL.animals),
                   SizedBox(
                     width: 10.0,
                   ),
-                  ReliefCard(redirectText.guides, redirectURL.guides),
+                  InfoCard(redirectText.guides, redirectURL.guides),
                 ]),
           ),
         ),
@@ -137,11 +167,11 @@ class _RedirectPageState extends State<RedirectPage> {
   }
 }
 
-class ReliefCard extends StatelessWidget {
+class InfoCard extends StatelessWidget {
   final String txt;
   final String url;
 
-  const ReliefCard(this.txt, this.url);
+  const InfoCard(this.txt, this.url);
 
   @override
   Widget build(BuildContext context) {

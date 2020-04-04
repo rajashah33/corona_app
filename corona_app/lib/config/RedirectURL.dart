@@ -9,7 +9,7 @@ final String guides = "https://blog.trello.com/work-from-home-guides";
 final String mohfw = "https://www.mohfw.gov.in/";
 
 final String worldStats = 'https://www.worldometers.info/coronavirus/';
-final String covidStats = 'https://www.covid19india.org/';
+final String indiaStats = 'https://www.covid19india.org/';
 
 
 }
