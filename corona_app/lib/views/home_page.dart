@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:corona_app/config/RedirectURL.dart';
+import 'package:corona_app/locator.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/redirect_page.dart';
@@ -19,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  RedirectURL redirectURL = locator.get<RedirectURL>();
   final databaseRef = Firestore.instance;
   List imageList = [];
   @override
@@ -84,15 +87,42 @@ class _MyHomePageState extends State<MyHomePage> {
                               }
                             }).toList(),
                           ),
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RedirectPage()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RedirectPage()));
                           },
                         ),
                       ]),
                     ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    GestureDetector(
+                    child: Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const ListTile(
+                            title:
+                                Text('WORLD HEALTH ORGANIZARION'),
+                            subtitle: Text('Coronavirus disease (COVID-19) advice for the public'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TrackerPage(url: redirectURL.general)));
+                    },
+                  ),
+                SizedBox(
+                  width: 10.0,
+                ),
               Row(
                 children: <Widget>[
                   CupertinoButton(

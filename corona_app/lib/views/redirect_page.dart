@@ -150,10 +150,6 @@ class _RedirectPageState extends State<RedirectPage> {
                   SizedBox(
                     width: 10.0,
                   ),
-                  InfoCard(redirectText.general, redirectURL.general),
-                  SizedBox(
-                    width: 10.0,
-                  ),
                   InfoCard(redirectText.infection, redirectURL.infection),
                   SizedBox(
                     width: 10.0,
