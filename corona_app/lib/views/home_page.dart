@@ -2,14 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
+import 'package:corona_app/views/redirect_page.dart';
 import 'package:corona_app/views/tracker_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MyHomePage extends StatefulWidget {
- 
-
   MyHomePage({Key key}) : super(key: key);
   // final String title;
 
@@ -57,32 +56,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Stack(children: <Widget>[
-                        CarouselSlider(
-                          autoPlay: true,
-                          items: imageList.map((i) {
-                            try {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
-                                    // padding: EdgeInsets.all(8.0),
-                                    child: FadeInImage.memoryNetwork(
-                                      placeholder: kTransparentImage,
-                                      image: i,
-                                      fit: BoxFit.fill,
-                                      // width: MediaQuery.of(context).size.width * .6,
-                                      alignment: Alignment.center,
-                                    ),
-                                  );
-                                },
-                              );
-                            } catch (e) {
-                              print(
-                                  '---Exception in home_page.dart in memoryNetwork image load');
-                            }
-                          }).toList(),
+                        GestureDetector(
+                          child: CarouselSlider(
+                            autoPlay: true,
+                            items: imageList.map((i) {
+                              try {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.0),
+                                      // padding: EdgeInsets.all(8.0),
+                                      child: FadeInImage.memoryNetwork(
+                                        placeholder: kTransparentImage,
+                                        image: i,
+                                        fit: BoxFit.fill,
+                                        // width: MediaQuery.of(context).size.width * .6,
+                                        alignment: Alignment.center,
+                                      ),
+                                    );
+                                  },
+                                );
+                              } catch (e) {
+                                print(
+                                    '---Exception in home_page.dart in memoryNetwork image load');
+                              }
+                            }).toList(),
+                          ),
+                          onTap: (){
+                            Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RedirectPage()));
+                          },
                         ),
                       ]),
                     ),

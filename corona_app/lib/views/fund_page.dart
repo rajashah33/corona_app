@@ -5,6 +5,7 @@ import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/tracker_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../locator.dart';
@@ -185,10 +186,9 @@ class ReliefCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        txt,
-                        textScaleFactor: 1.3,
-                      ),
+                      Text(txt,
+                          style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                          textScaleFactor: 1.3),
                     ],
                   ),
                 ),
@@ -205,17 +205,14 @@ class ReliefCard extends StatelessWidget {
                       InkWell(
                         child: Text(
                           "Donate",
-                          textScaleFactor: 1.5,
+                          style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                          textScaleFactor: 1.3,
                         ),
                         onTap: () async {
                           if (isNumeric(url)) {
                             buildShowDialog(context, url);
                           } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TrackerPage(url: url)));
+                            if (await canLaunch(url)) launch(url);
                           }
                         },
                         // onTap: () {
@@ -346,13 +343,21 @@ class ReliefCard extends StatelessWidget {
               Center(
                 child: Column(
                   children: <Widget>[
-                    Text("BANK DETAILS\n\n"),
-                    Text(details),
+                    Text("BANK DETAILS\n\n",
+                        style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                        textScaleFactor: 1.2),
+                    Text(details,
+                        style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                        textScaleFactor: 1.0),
                   ],
                 ),
               ),
               RaisedButton(
-                  child: Text("Back"),
+                  child: Text(
+                    "Back",
+                    style: GoogleFonts.lato(fontStyle: FontStyle.normal),
+                    textScaleFactor: 1.0,
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   })

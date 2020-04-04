@@ -1,7 +1,7 @@
 class ReliefURL{
 
-final String pmcares = "https://gpay.app.goo.gl/WAwzkM";
-final String pmNAT = "https://pmnrf.gov.in/en/";
+final String pmcares = "https://gpay.app.goo.gl/aiZMqs";
+final String pmNAT = "https://coronaappieee.page.link/pmnrf";
 final String cmAP = "3";
 final String cmArP = "4";
 final String cmAS = "5";
