@@ -1,6 +1,6 @@
 import 'package:corona_app/config/AppConfig.dart';
 import 'package:corona_app/locator.dart';
-import 'package:corona_app/views/home_page.dart';
+import 'package:corona_app/views/navigation_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,16 +8,18 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+
   final AppConfig conf = locator<AppConfig>();
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: conf.appName,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: conf.themeColor,
       ),
-      home: MyHomePage(title: 'XYZ APP'),
+      home: NavigationView(),
     );
   }
 }
