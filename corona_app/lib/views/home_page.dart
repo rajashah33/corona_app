@@ -30,8 +30,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .getDocuments()
         .then((QuerySnapshot snapshot) {
       setState(() {
-        snapshot.documents
-            .forEach((f) => imageList.add(f.data['link'].toString()));
+        snapshot.documents.forEach((f) {
+          // f.data['id']
+          imageList.add(f.data['link'].toString());
+        });
       });
     });
   }
@@ -60,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: CarouselSlider(
                             autoPlay: true,
                             items: imageList.map((i) {
+                              print('----' + imageList.length.toString());
                               try {
                                 return Builder(
                                   builder: (BuildContext context) {
@@ -84,11 +87,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               }
                             }).toList(),
                           ),
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RedirectPage()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RedirectPage()));
                           },
                         ),
                       ]),
