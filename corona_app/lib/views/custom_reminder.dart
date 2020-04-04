@@ -221,8 +221,12 @@ class _CustomReminderState extends State<CustomReminder> {
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     // await flutterLocalNotificationsPlugin.schedule(0, _label, 'scheduled body',
     //     scheduledNotificationDateTime, platformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(id, _label,
-        'this is the body', Time(h, m, 0), platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(
+        id,
+        _label,
+        'Fight with Corona Virus.\n ' + _label,
+        Time(h, m, 0),
+        platformChannelSpecifics);
     print(Time(h, m, 0).hour);
   }
 
