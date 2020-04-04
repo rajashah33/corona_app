@@ -96,33 +96,68 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ]),
                     ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    GestureDetector(
-                    child: Card(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const ListTile(
-                            title:
-                                Text('WORLD HEALTH ORGANIZARION'),
-                            subtitle: Text('Coronavirus disease (COVID-19) advice for the public'),
-                          ),
-                        ],
+              SizedBox(
+                width: 10.0,
+              ),
+              GestureDetector(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                      height: MediaQuery.of(context).size.width / 2 - 100,
+                      width: MediaQuery.of(context).size.width / 2 - 100,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/whologo.jpg"),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  TrackerPage(url: redirectURL.general)));
-                    },
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const ListTile(
+                                title: Text('CORONAVIRUS DISEASE (COVID-19)\nGENERAL ADVICE FOR PUBLIC'),
+                                subtitle: Text(
+                                    '\nWORLD HEALTH ORGANIZARION'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                SizedBox(
-                  width: 10.0,
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TrackerPage(url: redirectURL.general)));
+                },
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
               Row(
                 children: <Widget>[
                   CupertinoButton(
