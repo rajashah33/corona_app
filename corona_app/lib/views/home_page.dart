@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:corona_app/config/RedirectURL.dart';
+import 'package:corona_app/locator.dart';
 import 'package:corona_app/scopped_models/home_scoped_model.dart';
 import 'package:corona_app/views/base_view.dart';
 import 'package:corona_app/views/redirect_page.dart';
@@ -19,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  RedirectURL redirectURL = locator.get<RedirectURL>();
   final databaseRef = Firestore.instance;
   List imageList = [];
   @override
@@ -96,6 +99,68 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ]),
                     ),
+              SizedBox(
+                width: 10.0,
+              ),
+              GestureDetector(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                      height: MediaQuery.of(context).size.width / 2 - 100,
+                      width: MediaQuery.of(context).size.width / 2 - 100,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/whologo.jpg"),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const ListTile(
+                                title: Text('CORONAVIRUS DISEASE (COVID-19)\nGENERAL ADVICE FOR PUBLIC'),
+                                subtitle: Text(
+                                    '\nWORLD HEALTH ORGANIZARION'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TrackerPage(url: redirectURL.general)));
+                },
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
               Row(
                 children: <Widget>[
                   CupertinoButton(
