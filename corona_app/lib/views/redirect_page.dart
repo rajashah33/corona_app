@@ -28,23 +28,33 @@ class _RedirectPageState extends State<RedirectPage> {
     return BaseView<RedirectScopedModel>(
       builder: (context, child, model) => Scaffold(
         appBar: AppBar(
-          title: Text('WHO and MOHFW'),
+          title: Text('Links to WHO and MOHFW'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Card(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const ListTile(
-                          title: Text('Ministry of Health and Family Welfare'),
-                          subtitle: Text('Govt. of India'),
-                        ),
-                      ],
+                  GestureDetector(
+                    child: Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const ListTile(
+                            title:
+                                Text('Ministry of Health and Family Welfare'),
+                            subtitle: Text('Govt. of India'),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TrackerPage(url: redirectURL.mohfw)));
+                    },
                   ),
                   Card(
                     child: Row(
@@ -70,8 +80,7 @@ class _RedirectPageState extends State<RedirectPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => TrackerPage(
-                                                url:
-                                                    redirectURL.indiaStats)));
+                                                url: redirectURL.indiaStats)));
                                   },
                                 )
                               ],
@@ -84,21 +93,25 @@ class _RedirectPageState extends State<RedirectPage> {
                   SizedBox(
                     width: 10.0,
                   ),
-                  InfoCard(redirectText.mohfw, redirectURL.mohfw),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const ListTile(
-                          title: Text('World Health Organization'),
-                          subtitle: Text(
-                              'Coronavirus disease (COVID-19) technical guidance'),
-                        ),
-                      ],
+                  GestureDetector(
+                    child: Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const ListTile(
+                            title: Text('World Health Organization'),
+                            subtitle: Text('Coronavirus disease (COVID-19)'),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TrackerPage(url: redirectURL.who)));
+                    },
                   ),
                   Card(
                     child: Row(
@@ -124,8 +137,7 @@ class _RedirectPageState extends State<RedirectPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => TrackerPage(
-                                                url:
-                                                    redirectURL.worldStats)));
+                                                url: redirectURL.worldStats)));
                                   },
                                 )
                               ],
