@@ -1,8 +1,10 @@
 import 'package:corona_app/config/constants.dart';
 import 'package:corona_app/models/newsArticle.dart';
 import 'package:corona_app/services/webservice.dart';
+import 'package:corona_app/views/tracker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsListState extends State<NewsList> {
   List<NewsArticle> _newsArticles = List<NewsArticle>();
@@ -31,8 +33,17 @@ class NewsListState extends State<NewsList> {
             : Image.network(_newsArticles[index].urlToImage),
         subtitle:
             Text(_newsArticles[index].title, style: TextStyle(fontSize: 18)),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      TrackerPage(url: _newsArticles[index].url)));
+        },
       );
-    } catch (e) {print('---Exception in newList.dart loading Image.Network');}
+    } catch (e) {
+      print('---Exception in newList.dart loading Image.Network');
+    }
   }
 
   @override
