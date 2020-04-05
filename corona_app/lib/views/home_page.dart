@@ -36,8 +36,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .getDocuments()
         .then((QuerySnapshot snapshot) {
       setState(() {
-        snapshot.documents
-            .forEach((f) => imageList.add(f.data['link'].toString()));
+        snapshot.documents.forEach((f) {
+          // f.data['id']
+          imageList.add(f.data['link'].toString());
+        });
       });
     });
   }
@@ -65,8 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             backgroundColor: Colors.greenAccent,
                           ),
                         ),
-                      )
-                    : Padding(
+                      ) 
+            :
+            Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Stack(children: <Widget>[
                           Container(
@@ -107,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ]),
                       ),
-                GestureDetector(
+                      GestureDetector(
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -244,6 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ],
                 ),
+                  //COmpare and check with del.dart
                 Column(
                   children: <Widget>[
                     CupertinoButton(

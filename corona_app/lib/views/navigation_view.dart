@@ -7,6 +7,7 @@ import 'package:corona_app/views/fund_page.dart';
 import 'package:corona_app/views/home_page.dart';
 import 'package:corona_app/views/newsList.dart';
 import 'package:corona_app/views/reminder_page.dart';
+import 'package:corona_app/views/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class _MyHomePageState extends State<NavigationView> {
     NewsList(),
     ReminderPage(),
     FundPage(),
-    
+    SignIn(),
   ];
   AppData _appData = locator<AppData>();
   @override
@@ -58,7 +59,7 @@ class _MyHomePageState extends State<NavigationView> {
                 activeColor: Colors.blue),
             BottomNavyBarItem(
                 icon: Icon(Icons.location_on),
-                title: Text('Fund'),
+                title: Text('Tracker'),
                 activeColor: Colors.blue),
           ],
         ),
