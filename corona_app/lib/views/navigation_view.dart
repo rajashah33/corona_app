@@ -24,10 +24,10 @@ class _MyHomePageState extends State<NavigationView> {
   int _currentIndex = 0;
   List _children = [
     MyHomePage(),
-    // NewsPage(),
     NewsList(),
     ReminderPage(),
     FundPage(),
+    
   ];
   AppData _appData = locator<AppData>();
   @override
@@ -54,6 +54,10 @@ class _MyHomePageState extends State<NavigationView> {
                 activeColor: Colors.pink),
             BottomNavyBarItem(
                 icon: Icon(Icons.monetization_on),
+                title: Text('Fund'),
+                activeColor: Colors.blue),
+            BottomNavyBarItem(
+                icon: Icon(Icons.location_on),
                 title: Text('Fund'),
                 activeColor: Colors.blue),
           ],
